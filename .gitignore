@@ -79,3 +79,7 @@ StyleCopViolations.xml
 
 # Support directory
 /Support
+RevDeBug.setup
+RemoteRecOff.bat
+RemoteRecOn.bat
+OpenRA.Game.tmsx

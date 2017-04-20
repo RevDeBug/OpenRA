@@ -25,13 +25,14 @@ namespace OpenRA
 {
 	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
+		#region NoTimeTravel
 		internal struct SyncHash
 		{
 			public readonly ISync Trait;
 			public readonly int Hash;
 			public SyncHash(ISync trait, int hash) { Trait = trait; Hash = hash; }
 		}
-
+		#endregion
 		public readonly ActorInfo Info;
 
 		public readonly World World;
@@ -56,6 +57,7 @@ namespace OpenRA
 		public bool IsIdle { get { return CurrentActivity == null || CurrentActivity.IsIdle; } }
 		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
 
+		#region NoTimeTravel
 		public CPos Location { get { return OccupiesSpace.TopLeft; } }
 		public WPos CenterPosition { get { return OccupiesSpace.CenterPosition; } }
 
@@ -68,7 +70,7 @@ namespace OpenRA
 				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
 			}
 		}
-
+		#endregion
 		internal IEnumerable<SyncHash> SyncHashes { get; private set; }
 
 		readonly IFacing facing;
@@ -129,6 +131,7 @@ namespace OpenRA
 				.Select(pair => new SyncHash(pair.First, pair.Second(pair.First)));
 		}
 
+		#region NoTimeTravel
 		Rectangle DetermineBounds()
 		{
 			var si = Info.TraitInfoOrDefault<SelectableInfo>();
@@ -189,7 +192,7 @@ namespace OpenRA
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
-
+		#endregion
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
 			if (!queued)
@@ -213,11 +216,12 @@ namespace OpenRA
 			return true;
 		}
 
+		#region NoTimeTravel
 		public override int GetHashCode()
 		{
 			return (int)ActorID;
 		}
-
+		#endregion
 		public override bool Equals(object obj)
 		{
 			var o = obj as Actor;
